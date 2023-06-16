@@ -1,0 +1,47 @@
+jobs:
+  stage_0_job_0:
+    name: rosbridge-test-msgs rosapi-msgs rosbridge-msgs rosbridge-library
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    needs: []
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Build ros-humble-rosbridge-test-msgs ros-humble-rosapi-msgs ros-humble-rosbridge-msgs
+        ros-humble-rosbridge-library
+      env:
+        ANACONDA_API_TOKEN: ${{ secrets.ANACONDA_API_TOKEN }}
+        CURRENT_RECIPES: ros-humble-rosbridge-test-msgs ros-humble-rosapi-msgs ros-humble-rosbridge-msgs
+          ros-humble-rosbridge-library
+        DOCKER_IMAGE: condaforge/linux-anvil-cos7-x86_64
+      run: |
+        export CI=azure
+        export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
+        export FEEDSTOCK_NAME=$(basename ${BUILD_REPOSITORY_NAME})
+        .scripts/run_docker_build.sh
+  stage_1_job_1:
+    name: rosapi rosbridge-server rosbridge-suite
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    needs:
+    - stage_0_job_0
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Build ros-humble-rosapi ros-humble-rosbridge-server ros-humble-rosbridge-suite
+      env:
+        ANACONDA_API_TOKEN: ${{ secrets.ANACONDA_API_TOKEN }}
+        CURRENT_RECIPES: ros-humble-rosapi ros-humble-rosbridge-server ros-humble-rosbridge-suite
+        DOCKER_IMAGE: condaforge/linux-anvil-cos7-x86_64
+      run: |
+        export CI=azure
+        export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
+        export FEEDSTOCK_NAME=$(basename ${BUILD_REPOSITORY_NAME})
+        .scripts/run_docker_build.sh
+name: build_linux
+on:
+  push:
+    branches:
+    - buildbranch_linux

@@ -1,0 +1,7 @@
+ros-humble-rosbridge-test-msgs
+ros-humble-rosapi-msgs
+ros-humble-rosbridge-msgs
+ros-humble-rosbridge-library
+ros-humble-rosapi
+ros-humble-rosbridge-server
+ros-humble-rosbridge-suite
