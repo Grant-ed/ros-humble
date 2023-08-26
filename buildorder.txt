@@ -1,0 +1,2 @@
+ros-humble-vision-msgs
+ros-humble-slam-toolbox
